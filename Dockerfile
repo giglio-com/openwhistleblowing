@@ -3,13 +3,26 @@
 # BUILD PHASE                              #
 #                                          #
 ############################################
-FROM centos:7 AS BUILDER
-MAINTAINER supporto.sviluppo@laserromae.it
+FROM postgres:9.6-bullseye
 
 # installing maven
-RUN yum -y install maven rpm-build
+RUN apt update -y && apt -y install \
+maven \
+build-essential \
+libelf1 \
+libpopt0 \
+librpm9 \
+librpmbuild9 \
+librpmio9 \
+librpmsign9 \
+rpm2cpio \
+debugedit \
+rpm-common \
+wget
 
-# creating the rpm
+RUN wget http://ftp.it.debian.org/debian/pool/main/r/rpm/rpm_4.16.1.2+dfsg1-3_arm64.deb && dpkg -i rpm_4.16.1.2+dfsg1-3_arm64.deb
+
+# creating the apt
 COPY pom.xml /root
 COPY src /root/src
 COPY LICENSE AUTHORS /root/
@@ -20,12 +33,6 @@ RUN cd /root; ls -l src; mvn package
 # EXEC PHASE                               #
 #                                          #
 ############################################
-FROM centos:7
-# package prerequisites
-RUN yum -y update && yum -y install epel-release
-
-# postgres config
-RUN yum -y install yum -y install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-redhat-repo-latest.noarch.rpm && yum -y install postgresql96-devel
 
 # backend specific instructions
 COPY --from=BUILDER /root/target/rpm/owb/RPMS/x86_64/owb-1.0.6-1.x86_64.rpm /root/

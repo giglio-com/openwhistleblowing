@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  merda:
+    image: postgres:9.6-bullseye
+    volumes:
+      - ./pom.xml:/root/pom.xml
+      - ./src:/root/src
+      - ./LICENSE:/root/LICENSE
+      - ./AUTHORS:/root/AUTHORS
+    stdin_open: true 
+    tty: true
+    entrypoint: /bin/bash
