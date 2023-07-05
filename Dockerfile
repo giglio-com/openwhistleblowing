@@ -20,7 +20,7 @@ debugedit \
 rpm-common \
 wget
 
-RUN wget http://ftp.it.debian.org/debian/pool/main/r/rpm/rpm_4.16.1.2+dfsg1-3_arm64.deb && dpkg -i rpm_4.16.1.2+dfsg1-3_arm64.deb
+RUN wget http://ftp.it.debian.org/debian/pool/main/r/rpm/rpm_4.16.1.2%2bdfsg1-3_amd64.deb && dpkg -i rpm_4.16.1.2%2bdfsg1-3_amd64.deb
 
 # creating the apt
 COPY pom.xml /root
